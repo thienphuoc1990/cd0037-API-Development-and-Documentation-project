@@ -1,0 +1,20 @@
+# Use postgres/example user/password credentials
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      # POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: trivia
+    ports:
+      - 5432:5432
+    volumes:
+      - db_volume:/var/lib/postgresql
+
+volumes:
+  db_volume: {}
