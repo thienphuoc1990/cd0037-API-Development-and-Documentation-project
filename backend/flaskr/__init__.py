@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
 
-from models import setup_db, Question, Category
+from models import setup_db, Question, Category, db
 
 QUESTIONS_PER_PAGE = 10
 
@@ -31,12 +31,22 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         return response
+    
 
     """
-    @TODO:
+    DONE:
     Create an endpoint to handle GET requests
     for all available categories.
     """
+    @app.route("/categories")
+    def get_categories():
+        categories = db.session.query(Category).all()
+        categories_dict = {category.id: category.type for category in categories}
+
+        return jsonify({
+            "success": True,
+            "categories": categories_dict
+        })
 
 
     """
