@@ -22,6 +22,12 @@ Completing this trivia app will give you the ability to structure plan, implemen
 
 We started the full stack application for you. It is designed with some key functional areas:
 
+### Infrastructure for local
+Run with docker compose from root folder of project.
+> docker-compose up -d
+
+It will run up 2 databases for local and testing. For BE data, need to run import DB follow in backend README.
+
 ### Backend
 
 The [backend](./backend/README.md) directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in `__init__.py` to define your endpoints and can reference models.py for DB and SQLAlchemy setup. These are the files you'd want to edit in the backend:
