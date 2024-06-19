@@ -37,3 +37,12 @@ content-type: application/json
     "difficulty": 4,
     "category": 5
 }
+
+###
+
+POST http://localhost:5000/questions/search
+content-type: application/json
+
+{
+    "searchTerm": "title"
+}
