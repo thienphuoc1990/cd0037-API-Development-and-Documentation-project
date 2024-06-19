@@ -69,24 +69,183 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 
 ## Documenting your Endpoints
 
-You will need to provide detailed documentation of your API endpoints including the URL, request parameters, and the response body. Use the example below as a reference.
-
-### Documentation Example
-
-`GET '/api/v1.0/categories'`
-
+### `GET '/categories'`
+  
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
-- Returns: An object with a single key, `categories`, that contains an object of `id: category_string` key: value pairs.
+- Returns: An object with a single key, categories, that contains an object of id: category_string key:value pairs.
 
 ```json
 {
-  "1": "Science",
-  "2": "Art",
-  "3": "Geography",
-  "4": "History",
-  "5": "Entertainment",
-  "6": "Sports"
+  "success": true,
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+  }
+}
+```
+
+### `GET '/questions?page=${integer}'`
+
+- Fetches a paginated set of questions, a total number of questions, all categories and current category.
+- Request Arguments: `page` - integer
+- Returns: An object with list of paginated question items, total questions, all categories, and current category
+
+```json
+{
+  "success": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What boxer's original name is Cassius Clay?",
+      "answer": "Muhammad Ali",
+      "category": 1,
+      "difficulty": 1
+    },
+    {
+      "id": 2,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?",
+      "answer": "Tom Cruise",
+      "category": 2,
+      "difficulty": 4
+    }
+  ],
+  "total_questions": 2,
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+  },
+  "current_category": "Science"
+}
+```
+
+### `DELETE '/questions/${id}'`
+
+- Deletes a specified question using the id of the question
+- Request Arguments: `id` - integer
+- Returns: A message
+
+```json
+{
+  "success": true,
+  "message": "Question successfully deleted"
+}
+```
+
+### `POST '/questions'`
+
+- Sends a post request to add a new question
+- Request Body: 
+
+```json
+{
+  "question": "question string",
+  "answer": "answer string",
+  "difficulty": 1,
+  "category": 3
+}
+```
+
+- Returns: A message
+
+  ```json
+  {
+    "success": true,
+    "message": "Question successfully created"
+  }
+  ```
+
+### `POST '/questions/search'`
+  
+- Sends a post request to search questions by search term
+- Request Body:
+
+```json
+{
+  "searchTerm": "search term string"
+}
+```
+
+- Returns: An object with list of questions, total questions and current category.
+
+```json
+{
+  "success": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What boxer's original name is Cassius Clay?",
+      "answer": "Muhammad Ali",
+      "category": 1,
+      "difficulty": 1
+    },
+    {
+      "id": 2,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?",
+      "answer": "Tom Cruise",
+      "category": 2,
+      "difficulty": 4
+    }
+  ],
+  "total_questions": 2,
+  "current_category": "Science"
+}
+```
+
+### `GET '/categories/${id}/questions'`
+  
+- Fetches questions of category by category id
+- Request Arguments: `id` - integer
+- Returns: An object with questions for the requested category, total questions, and current category
+
+```json
+{
+  "success": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What boxer's original name is Cassius Clay?",
+      "answer": "Muhammad Ali",
+      "category": 1,
+      "difficulty": 1
+    },
+    {
+      "id": 2,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?",
+      "answer": "Tom Cruise",
+      "category": 2,
+      "difficulty": 4
+    }
+  ],
+  "total_questions": 2,
+  "current_category": "Science"
+}
+```
+
+### `POST '/quizzes'`
+
+- Sends a post request to get the next random question
+- Request Body:
+
+```json
+{
+  "previous_questions": [1],
+  "quiz_category": "Science"
+}
+```
+
+- Returns: a single new question object
+
+```json
+{
+  "success": true,
+  "question": {
+    "id": 2,
+    "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?",
+    "answer": "Tom Cruise",
+    "category": 2,
+    "difficulty": 4
+  }
 }
 ```
 
