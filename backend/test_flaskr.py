@@ -31,6 +31,15 @@ class TriviaTestCase(unittest.TestCase):
     DOING
     Write at least one test for each test for successful operation and for expected errors.
     """
+    # GET /notfoundurl
+    def test_get_notfound_url(self):
+        res = self.client().get("/notfoundurl")
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertFalse(data["success"])
+        self.assertEqual(data["message"], "Not Found")
+
     # GET /categories
     def test_get_categories(self):
         res = self.client().get("/categories")
