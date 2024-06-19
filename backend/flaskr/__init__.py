@@ -3,6 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
+from sqlalchemy import cast, Integer
 
 from models import setup_db, Question, Category, db
 
@@ -167,7 +168,7 @@ def create_app(test_config=None):
     """
     @app.route("/categories/<int:category_id>/questions")
     def get_questions_by_category(category_id):
-        questions = db.session.query(Question).filter(Question.category == "{category_id}").all()
+        questions = db.session.query(Question).filter(cast(Question.category, Integer) == category_id).all()
         current_category = db.session.query(Category).get(category_id)
         
         formatted_questions = [question.format() for question in questions]
@@ -180,7 +181,7 @@ def create_app(test_config=None):
         })
 
     """
-    @TODO:
+    @DONE:
     Create a POST endpoint to get questions to play the quiz.
     This endpoint should take category and previous question parameters
     and return a random questions within the given category,
@@ -190,12 +191,52 @@ def create_app(test_config=None):
     one question at a time is displayed, the user is allowed to answer
     and shown whether they were correct or not.
     """
+    @app.route("/quizzes", methods=["POST"])
+    def get_quiz_question():
+        data = request.get_json()
+        previous_questions = data["previous_questions"]
+        quiz_category = data["quiz_category"]
+
+        if quiz_category["id"] == 0:
+            questions = db.session.query(Question).filter(Question.id.notin_(previous_questions)).all()
+        else:
+            questions = (db.session.query(Question).filter(cast(Question.category, Integer) == quiz_category["id"])
+                            .filter(Question.id.notin_(previous_questions)).all())
+
+        if len(questions) == 0:
+            abort(404)
+
+        formatted_questions = [question.format() for question in questions]
+
+        return jsonify({
+            "success": True,
+            "question": random.choice(formatted_questions)
+        })
 
     """
-    @TODO:
+    @DONE:
     Create error handlers for all expected errors
     including 404 and 422.
-    """
+    """    
+    @app.errorhandler(404)
+    def not_found(error):
+        """
+        Error handler for 404
+        """
+        return jsonify({
+            "success": False,
+            "message": "Not Found"
+        }), 404
+    
+    @app.errorhandler(422)
+    def unprocessable_entity(error):
+        """
+        Error handler for 422
+        """
+        return jsonify({
+            "success": False,
+            "message": "Unprocessable Entity"
+        }), 422
 
     return app
 

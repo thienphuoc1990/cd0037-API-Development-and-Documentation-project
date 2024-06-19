@@ -50,3 +50,30 @@ content-type: application/json
 ###
 
 GET http://localhost:5000/categories/1/questions
+
+###
+
+# 404: No questions
+POST http://localhost:5000/quizzes
+content-type: application/json
+
+{
+    "previous_questions": [20, 22, 21],
+    "quiz_category": {
+        "type": "Science",
+        "id": 1
+    }
+}
+
+###
+
+POST http://localhost:5000/quizzes
+content-type: application/json
+
+{
+    "previous_questions": [20],
+    "quiz_category": {
+        "type": "Science",
+        "id": 1
+    }
+}
