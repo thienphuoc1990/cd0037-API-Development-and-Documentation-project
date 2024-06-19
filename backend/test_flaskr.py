@@ -14,8 +14,9 @@ class TriviaTestCase(unittest.TestCase):
     def setUpClass(self):
         """Define test variables and initialize app."""
         self.database_name = "trivia_test"
-        self.database_path = "postgres://{}@{}/{}".format('postgres', 'localhost:15432', self.database_name)
-        
+        self.database_path = "postgres://{}@{}/{}".format(
+            'postgres', 'localhost:15432', self.database_name)
+
         self.app = create_app({
             "SQLALCHEMY_DATABASE_URI": self.database_path
         })
@@ -24,7 +25,6 @@ class TriviaTestCase(unittest.TestCase):
 
         self.seedData(self)
 
-    
     @classmethod
     def tearDownClass(self):
         """Executed after reach test"""
@@ -49,15 +49,14 @@ class TriviaTestCase(unittest.TestCase):
             question="What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?",
             answer="Tom Cruise",
             difficulty=4,
-            category=2
-        ).insert()
-
+            category=2).insert()
 
     """
     DOING
     Write at least one test for each test for successful operation and for expected errors.
     """
     # GET /notfoundurl
+
     def test_get_notfound_url(self):
         res = self.client().get("/notfoundurl")
         data = json.loads(res.data)
@@ -86,11 +85,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data["success"])
         self.assertEqual(data["questions"],
-            [
-                {'answer': 'Muhammad Ali', 'category': '1', 'difficulty': 1, 'id': 1, 'question': "What boxer's original name is Cassius Clay?"}, 
-                {'answer': 'Tom Cruise', 'category': '2', 'difficulty': 4, 'id': 2, 'question': 'What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?'}
-            ]
-        )
+                         [{'answer': 'Muhammad Ali',
+                           'category': '1',
+                           'difficulty': 1,
+                           'id': 1,
+                           'question': "What boxer's original name is Cassius Clay?"},
+                          {'answer': 'Tom Cruise',
+                           'category': '2',
+                           'difficulty': 4,
+                           'id': 2,
+                           'question': 'What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?'}])
         self.assertEqual(len(data["questions"]), 2)
         self.assertEqual(data["categories"], {
             '1': 'Science', '2': 'Art'
@@ -114,7 +118,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertFalse(data["success"])
         self.assertEqual(data["message"], "Unprocessable Entity")
-    
+
     def test_post_question_fail(self):
         res = self.client().post("/questions", json={
             "question": "Test question",
@@ -162,12 +166,14 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data["success"])
         self.assertEqual(data["questions"],
-            [
-                {'answer': 'Muhammad Ali', 'category': '1', 'difficulty': 1, 'id': 1, 'question': "What boxer's original name is Cassius Clay?"}, 
-            ]
-        )
+                         [{'answer': 'Muhammad Ali',
+                           'category': '1',
+                           'difficulty': 1,
+                           'id': 1,
+                           'question': "What boxer's original name is Cassius Clay?"},
+                          ])
         self.assertEqual(data["total_questions"], 1)
-    
+
     def test_search_questions_not_found(self):
         res = self.client().post("/questions/search", json={
             "searchTerm": "not found text"
@@ -188,10 +194,12 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data["success"])
         self.assertEqual(data["questions"],
-            [
-                {'answer': 'Muhammad Ali', 'category': '1', 'difficulty': 1, 'id': 1, 'question': "What boxer's original name is Cassius Clay?"}, 
-            ]
-        )
+                         [{'answer': 'Muhammad Ali',
+                           'category': '1',
+                           'difficulty': 1,
+                           'id': 1,
+                           'question': "What boxer's original name is Cassius Clay?"},
+                          ])
         self.assertEqual(data["total_questions"], 1)
 
     def test_get_questions_by_category_not_found(self):
