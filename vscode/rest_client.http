@@ -12,3 +12,28 @@ DELETE http://localhost:5000/questions/99999
 ###
 
 DELETE http://localhost:5000/questions/2
+
+###
+
+# Create success
+POST http://localhost:5000/questions
+content-type: application/json
+
+{
+    "question": "question content",
+    "answer": "answer content",
+    "difficulty": 4,
+    "category": 5
+}
+
+###
+
+# 422: Create fail when missed field
+POST http://localhost:5000/questions
+content-type: application/json
+
+{
+    "question": "question content",
+    "difficulty": 4,
+    "category": 5
+}

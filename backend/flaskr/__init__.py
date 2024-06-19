@@ -102,7 +102,7 @@ def create_app(test_config=None):
         })
 
     """
-    @TODO:
+    @DONE:
     Create an endpoint to POST a new question,
     which will require the question and answer text,
     category, and difficulty score.
@@ -111,6 +111,25 @@ def create_app(test_config=None):
     the form will clear and the question will appear at the end of the last page
     of the questions list in the "List" tab.
     """
+    @app.route("/questions", methods=["POST"])
+    def create_question():
+        data = request.get_json()
+
+        if (data["question"] is None or data["answer"] is None or
+            data["difficulty"] is None or data["category"] is None):
+            abort(422)
+
+        Question(
+            question=data["question"],
+            answer=data["answer"],
+            difficulty=data["difficulty"],
+            category=data["category"]
+        ).insert()
+
+        return jsonify({
+            "success": True,
+            "message": "Question successfully created"
+        })
 
     """
     @TODO:
