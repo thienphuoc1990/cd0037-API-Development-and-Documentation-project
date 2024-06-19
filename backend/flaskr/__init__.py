@@ -76,9 +76,9 @@ def create_app(test_config=None):
         return jsonify({
             "success": True,
             "questions": formatted_questions[start:end],
-            "totalQuestions": len(formatted_questions),
+            "total_questions": len(formatted_questions),
             "categories": categories_dict,
-            "currentCategory": ''
+            "current_category": ''
         })
 
     """
@@ -154,8 +154,8 @@ def create_app(test_config=None):
         return jsonify({
             "success": True,
             "questions": formatted_questions,
-            "totalQuestions": len(formatted_questions),
-            'currentCategory': None
+            "total_questions": len(formatted_questions),
+            'current_category': None
         })
 
     """
@@ -176,8 +176,8 @@ def create_app(test_config=None):
         return jsonify({
             "success": True,
             "questions": formatted_questions,
-            "totalQuestions": len(formatted_questions),
-            "currentCategory": current_category.type
+            "total_questions": len(formatted_questions),
+            "current_category": current_category.type
         })
 
     """
