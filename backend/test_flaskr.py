@@ -10,7 +10,8 @@ from models import setup_db, Question, Category, db
 class TriviaTestCase(unittest.TestCase):
     """This class represents the trivia test case"""
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(self):
         """Define test variables and initialize app."""
         self.database_name = "trivia_test"
         self.database_path = "postgres://{}@{}/{}".format('postgres', 'localhost:15432', self.database_name)
@@ -21,11 +22,22 @@ class TriviaTestCase(unittest.TestCase):
 
         self.client = self.app.test_client
 
+        self.seedData(self)
+
     
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(self):
         """Executed after reach test"""
         db.drop_all()
         pass
+
+    def seedData(self):
+        Category(
+            type="Science"
+        ).insert()
+        Category(
+            type="Art"
+        ).insert()
 
     """
     DOING
@@ -47,7 +59,10 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data["success"])
-        self.assertEqual(data["categories"], {})
+        self.assertEqual(data["categories"], {
+            "1": "Science",
+            "2": "Art"
+        })
 
 
 # Make the tests conveniently executable
