@@ -4,7 +4,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 
 from flaskr import create_app
-from models import setup_db, Question, Category
+from models import setup_db, Question, Category, db
 
 
 class TriviaTestCase(unittest.TestCase):
@@ -13,7 +13,7 @@ class TriviaTestCase(unittest.TestCase):
     def setUp(self):
         """Define test variables and initialize app."""
         self.database_name = "trivia_test"
-        self.database_path = "postgres://{}/{}".format('localhost:5432', self.database_name)
+        self.database_path = "postgres://{}@{}/{}".format('postgres', 'localhost:15432', self.database_name)
         
         self.app = create_app({
             "SQLALCHEMY_DATABASE_URI": self.database_path
@@ -24,12 +24,21 @@ class TriviaTestCase(unittest.TestCase):
     
     def tearDown(self):
         """Executed after reach test"""
+        db.drop_all()
         pass
 
     """
-    TODO
+    DOING
     Write at least one test for each test for successful operation and for expected errors.
     """
+    # GET /categories
+    def test_get_categories(self):
+        res = self.client().get("/categories")
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data["success"])
+        self.assertEqual(data["categories"], {})
 
 
 # Make the tests conveniently executable
