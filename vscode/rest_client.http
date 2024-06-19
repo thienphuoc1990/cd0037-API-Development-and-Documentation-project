@@ -2,4 +2,13 @@ GET http://localhost:5000/categories
 
 ###
 
-GET http://localhost:5000/questions?page=2
+GET http://localhost:5000/questions?page=1
+
+###
+
+# 422 when question notfound
+DELETE http://localhost:5000/questions/99999
+
+###
+
+DELETE http://localhost:5000/questions/2
