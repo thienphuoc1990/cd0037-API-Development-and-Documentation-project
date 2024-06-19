@@ -39,6 +39,20 @@ class TriviaTestCase(unittest.TestCase):
             type="Art"
         ).insert()
 
+        Question(
+            question="What boxer's original name is Cassius Clay?",
+            answer="Muhammad Ali",
+            difficulty=1,
+            category=1
+        ).insert()
+        Question(
+            question="What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?",
+            answer="Tom Cruise",
+            difficulty=4,
+            category=2
+        ).insert()
+
+
     """
     DOING
     Write at least one test for each test for successful operation and for expected errors.
@@ -62,6 +76,24 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["categories"], {
             "1": "Science",
             "2": "Art"
+        })
+
+    # GET /questions
+    def test_get_questions(self):
+        res = self.client().get("/questions")
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data["success"])
+        self.assertEqual(data["questions"],
+            [
+                {'answer': 'Muhammad Ali', 'category': '1', 'difficulty': 1, 'id': 1, 'question': "What boxer's original name is Cassius Clay?"}, 
+                {'answer': 'Tom Cruise', 'category': '2', 'difficulty': 4, 'id': 2, 'question': 'What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?'}
+            ]
+        )
+        self.assertEqual(len(data["questions"]), 2)
+        self.assertEqual(data["categories"], {
+            '1': 'Science', '2': 'Art'
         })
 
 
