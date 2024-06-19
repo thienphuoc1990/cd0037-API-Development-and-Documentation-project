@@ -46,3 +46,7 @@ content-type: application/json
 {
     "searchTerm": "title"
 }
+
+###
+
+GET http://localhost:5000/categories/1/questions
