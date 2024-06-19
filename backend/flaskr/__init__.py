@@ -177,7 +177,7 @@ def create_app(test_config=None):
             "success": True,
             "questions": formatted_questions,
             "total_questions": len(formatted_questions),
-            "current_category": current_category.type
+            "current_category": current_category.type if current_category else 0
         })
 
     """
