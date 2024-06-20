@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import '../stylesheets/QuizView.css';
 
-const questionsPerPlay = 3;
+const questionsPerPlay = 5;
 
 class QuizView extends Component {
   constructor(props) {
