@@ -24,16 +24,16 @@ pip install -r requirements.txt
 
 ### Set up the Database
 
-With Postgres running, create a `trivia` database:
-
+Copy the file .env.example to .env and update the variable.
+Run docker-compose from root project with command
 ```bash
-createdb trivia
+docker-compose up -d
 ```
 
 Populate the database using the `trivia.psql` file provided. From the `backend` folder in terminal run:
 
 ```bash
-psql trivia < trivia.psql
+psql -hlocalhost -Upostgres trivia < trivia.psql
 ```
 
 ### Run the Server
@@ -43,6 +43,8 @@ From within the `./src` directory first ensure you are working using your create
 To run the server, execute:
 
 ```bash
+export FLASK_APP=flaskr
+export FLASK_ENV=development
 flask run --reload
 ```
 
@@ -254,10 +256,11 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 Write at least one test for the success and at least one error behavior of each endpoint using the unittest library.
 
 To deploy the tests, run
+```bash
+docker-compose up -d
+```
 
 ```bash
-dropdb trivia_test
-createdb trivia_test
-psql trivia_test < trivia.psql
-python test_flaskr.py
+DB_NAME='trivia_test' DB_USER='postgres' DB_PASSWORD='postgres' DB_HOST='localhost' DB_PORT='15432' python test_flaskr.py
 ```
+![Test result](./docs/assets/test_result.png)
