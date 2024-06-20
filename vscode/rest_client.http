@@ -53,7 +53,7 @@ GET http://localhost:5000/categories/1/questions
 
 ###
 
-# 404: No questions
+# No new questions
 POST http://localhost:5000/quizzes
 content-type: application/json
 

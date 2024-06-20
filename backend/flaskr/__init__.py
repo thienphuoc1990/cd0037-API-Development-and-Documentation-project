@@ -193,6 +193,7 @@ def create_app(test_config=None):
     """
     @app.route("/quizzes", methods=["POST"])
     def get_quiz_question():
+        result = {"success": True}
         data = request.get_json()
         previous_questions = data["previous_questions"]
         quiz_category = data["quiz_category"]
@@ -203,15 +204,11 @@ def create_app(test_config=None):
             questions = (db.session.query(Question).filter(cast(Question.category, Integer) == quiz_category["id"])
                             .filter(Question.id.notin_(previous_questions)).all())
 
-        if len(questions) == 0:
-            abort(404)
+        if len(questions) != 0:
+            formatted_questions = [question.format() for question in questions]
+            result["question"] = random.choice(formatted_questions)
 
-        formatted_questions = [question.format() for question in questions]
-
-        return jsonify({
-            "success": True,
-            "question": random.choice(formatted_questions)
-        })
+        return jsonify(result)
 
     """
     @DONE:
